@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 import chrome
-import sqlite3
-import constants
+import cookies
 
 app = FastAPI()
 
@@ -29,18 +28,9 @@ def root():
 
 @app.get("/cookies")
 def get_cookies():
-    # read sql lite file from the chrome dir
-    sql_lite_file = f"{constants.chrome_tmp_path}/Default/Cookies"
-    conn = sqlite3.connect(sql_lite_file)
-
-    c = conn.cursor()
-    c.execute('SELECT * FROM cookies')
-    all_rows = c.fetchall()
-    print(all_rows)
-
-    return all_rows
+    return cookies.fetch_all_cookies()
 
 
-@app.put("/cookie/:name")
+@app.put("/cookie")
 def put_cookie():
-    return []
+    return cookies.insert_cookie("test", "oke123")
